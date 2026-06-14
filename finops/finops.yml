@@ -1,0 +1,35 @@
+finops:
+  model: transaction_fee
+  description: >
+    NOWPayments charges no setup or integration fees. Costs are purely
+    transaction-based, applied only on completed payments.
+
+  fees:
+    monocurrency_payments:
+      rate: "0.5%"
+      description: Fixed service fee when customer pays in the same cryptocurrency as the merchant receives.
+
+    conversion_payments:
+      rate: "1.0%"
+      description: Fixed service fee when automatic coin conversion is used (customer pays in different crypto than merchant receives).
+
+    mass_payouts:
+      rate: "0%"
+      description: No service fee for mass payout transactions. Only blockchain network fees apply.
+
+    network_fees:
+      description: Blockchain network fees are charged separately from service fees and vary by cryptocurrency and network congestion.
+
+  cost_savings:
+    vs_paypal: "Up to 90% savings on transaction costs, especially using USDT on BSC."
+
+  volume_discounts:
+    available: true
+    basis: monthly BTC flow thresholds
+    contact: partners@nowpayments.io
+
+  billing_currency: cryptocurrency (settled in merchant's chosen currency or fiat via Fiat Withdrawals API)
+
+  free_tier:
+    available: false
+    notes: Sandbox environment is free for testing; production requires a merchant account.

@@ -1,0 +1,23 @@
+rate_limits:
+  notes: >
+    NOWPayments does not publicly document specific numeric rate limits in their
+    API documentation as of June 2026. The platform advertises 99.99% uptime and
+    350ms average response times. Mass Payouts API supports thousands of
+    transactions in a single API call. For enterprise-level rate limit details,
+    contact partners@nowpayments.io.
+
+  performance:
+    average_response_time_ms: 350
+    uptime_sla: "99.99%"
+    simultaneous_transactions: 1000
+    average_transaction_completion_min: 5
+
+  authentication:
+    api_key_header: x-api-key
+    jwt_bearer: required for payouts and payment list endpoints
+    jwt_validity_minutes: 5
+    jwt_endpoint: "https://api.nowpayments.io/v1/auth"
+
+  sandbox:
+    base_url: "https://api.sandbox.nowpayments.io/v1"
+    description: Full test environment with no real transactions or costs.

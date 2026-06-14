@@ -1,0 +1,34 @@
+plans:
+  - name: Standard
+    description: Core crypto payment gateway with 0.5% fee for monocurrency payments. Access to full REST API, sandbox environment, IPN notifications, and all integration tools.
+    fee_monocurrency: "0.5%"
+    fee_conversion: "1.0%"
+    fee_mass_payouts: "0%"
+    network_fees: billed separately
+    features:
+      - Payment API
+      - Invoice API
+      - Mass Payouts API
+      - Recurring Payments API
+      - Customer Management API
+      - Custody API
+      - Fiat Withdrawals API
+      - Sandbox environment
+      - IPN webhooks
+      - 300+ cryptocurrencies
+      - 20+ fiat currencies
+      - 13 programming language SDKs
+      - 24/7 support
+    notes: Volume-based fee reductions available for high-throughput merchants measured in monthly BTC flow.
+
+  - name: Volume Discount
+    description: Reduced fees for merchants with high monthly transaction volumes. Contact sales for custom thresholds and rates.
+    fee_monocurrency: negotiated
+    fee_conversion: negotiated
+    fee_mass_payouts: "0%"
+    network_fees: billed separately
+    features:
+      - All Standard plan features
+      - Custom fee structure
+      - Dedicated account management
+    notes: Available when monthly asset flow reaches certain BTC thresholds. Contact partners@nowpayments.io.
