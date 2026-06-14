@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/json-schema/payout.json",
+  "title": "Payout",
+  "description": "Schema for a NOWPayments mass payout object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique payout batch identifier"
+    },
+    "status": {
+      "type": "string",
+      "description": "Overall payout batch status"
+    },
+    "withdrawals": {
+      "type": "array",
+      "description": "List of individual withdrawal items in this payout batch",
+      "items": {
+        "$ref": "#/definitions/WithdrawalItem"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Payout creation timestamp"
+    }
+  },
+  "definitions": {
+    "WithdrawalItem": {
+      "type": "object",
+      "description": "An individual withdrawal within a payout batch",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique withdrawal item identifier"
+        },
+        "address": {
+          "type": "string",
+          "description": "Recipient wallet address"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Cryptocurrency to send (e.g. btc, eth)"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Payout amount (max 6 decimal places)"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of this withdrawal item",
+          "enum": ["WAITING", "CONFIRMING", "CONFIRMED", "SENDING", "FINISHED", "FAILED"]
+        },
+        "hash": {
+          "type": "string",
+          "description": "Blockchain transaction hash"
+        }
+      },
+      "required": ["address", "currency", "amount"]
+    }
+  }
+}

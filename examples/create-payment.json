@@ -1,0 +1,38 @@
+{
+  "title": "Create Payment Example",
+  "description": "Example request and response for creating a NOWPayments crypto payment",
+  "request": {
+    "method": "POST",
+    "url": "https://api.nowpayments.io/v1/payment",
+    "headers": {
+      "x-api-key": "YOUR_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "price_amount": 100,
+      "price_currency": "usd",
+      "pay_currency": "btc",
+      "ipn_callback_url": "https://example.com/ipn",
+      "order_id": "ORDER-12345",
+      "order_description": "Apple Macbook Pro 2019 x 1"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "payment_id": 5045208125,
+      "payment_status": "waiting",
+      "pay_address": "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX",
+      "price_amount": 100,
+      "price_currency": "usd",
+      "pay_amount": 0.00267,
+      "pay_currency": "btc",
+      "order_id": "ORDER-12345",
+      "order_description": "Apple Macbook Pro 2019 x 1",
+      "ipn_callback_url": "https://example.com/ipn",
+      "created_at": "2021-01-15T12:00:00.000Z",
+      "updated_at": "2021-01-15T12:00:00.000Z",
+      "purchase_id": 4944856743
+    }
+  }
+}

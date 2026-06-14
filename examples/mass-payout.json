@@ -1,0 +1,49 @@
+{
+  "title": "Mass Payout Example",
+  "description": "Example request and response for creating a NOWPayments mass payout batch",
+  "request": {
+    "method": "POST",
+    "url": "https://api.nowpayments.io/v1/payout",
+    "headers": {
+      "x-api-key": "YOUR_API_KEY",
+      "Authorization": "Bearer YOUR_JWT_TOKEN",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "withdrawals": [
+        {
+          "address": "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX",
+          "currency": "btc",
+          "amount": 0.001
+        },
+        {
+          "address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+          "currency": "eth",
+          "amount": 0.05
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "payout-batch-7890",
+      "withdrawals": [
+        {
+          "id": "withdrawal-001",
+          "address": "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX",
+          "currency": "btc",
+          "amount": 0.001,
+          "status": "WAITING"
+        },
+        {
+          "id": "withdrawal-002",
+          "address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+          "currency": "eth",
+          "amount": 0.05,
+          "status": "WAITING"
+        }
+      ]
+    }
+  }
+}

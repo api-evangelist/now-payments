@@ -35,7 +35,7 @@ apis:
       - type: Sandbox
         url: https://api.sandbox.nowpayments.io/v1
       - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/openapi.yml
+        url: https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/openapi/openapi.yml
     contact:
       - FN: NOWPayments Support
         email: support@nowpayments.io

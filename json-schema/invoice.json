@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/json-schema/invoice.json",
+  "title": "Invoice",
+  "description": "Schema for a NOWPayments payment invoice object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique invoice identifier"
+    },
+    "order_id": {
+      "type": "string",
+      "description": "Merchant-defined order identifier"
+    },
+    "order_description": {
+      "type": "string",
+      "description": "Human-readable order description"
+    },
+    "price_amount": {
+      "type": "number",
+      "description": "Invoice amount in fiat currency"
+    },
+    "price_currency": {
+      "type": "string",
+      "description": "Fiat currency code (e.g. usd, eur)"
+    },
+    "pay_currency": {
+      "type": ["string", "null"],
+      "description": "Preferred payment cryptocurrency, null if not specified"
+    },
+    "ipn_callback_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL for IPN callback notifications"
+    },
+    "invoice_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Hosted payment page URL for the customer"
+    },
+    "success_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to redirect customer after successful payment"
+    },
+    "cancel_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to redirect customer if payment is cancelled"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Invoice creation timestamp"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Invoice last update timestamp"
+    }
+  },
+  "required": ["id", "price_amount", "price_currency", "invoice_url"]
+}

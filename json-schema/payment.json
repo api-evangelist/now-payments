@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/json-schema/payment.json",
+  "title": "Payment",
+  "description": "Schema for a NOWPayments cryptocurrency payment object",
+  "type": "object",
+  "properties": {
+    "payment_id": {
+      "type": "integer",
+      "description": "Unique payment identifier"
+    },
+    "payment_status": {
+      "type": "string",
+      "description": "Current status of the payment",
+      "enum": ["waiting", "confirming", "confirmed", "sending", "partially_paid", "finished", "failed", "refunded", "expired"]
+    },
+    "pay_address": {
+      "type": "string",
+      "description": "Cryptocurrency address the customer should send payment to"
+    },
+    "price_amount": {
+      "type": "number",
+      "description": "Requested payment amount in fiat currency"
+    },
+    "price_currency": {
+      "type": "string",
+      "description": "Fiat currency code (e.g. usd, eur)"
+    },
+    "pay_amount": {
+      "type": "number",
+      "description": "Amount to pay in cryptocurrency"
+    },
+    "actually_paid": {
+      "type": "number",
+      "description": "Amount actually received so far"
+    },
+    "pay_currency": {
+      "type": "string",
+      "description": "Cryptocurrency used for payment (e.g. btc, eth)"
+    },
+    "order_id": {
+      "type": "string",
+      "description": "Merchant-defined order identifier"
+    },
+    "order_description": {
+      "type": "string",
+      "description": "Human-readable order description"
+    },
+    "ipn_callback_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL for IPN callback notifications"
+    },
+    "purchase_id": {
+      "type": "integer",
+      "description": "Purchase identifier"
+    },
+    "outcome_amount": {
+      "type": "number",
+      "description": "Amount to be credited to merchant after conversion"
+    },
+    "outcome_currency": {
+      "type": "string",
+      "description": "Currency of the outcome amount"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Payment creation timestamp"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Payment last update timestamp"
+    }
+  },
+  "required": ["payment_id", "payment_status", "pay_address", "price_amount", "price_currency", "pay_amount", "pay_currency"]
+}

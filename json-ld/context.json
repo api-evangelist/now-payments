@@ -1,0 +1,122 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "nowpayments": "https://nowpayments.io/vocab#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Payment": "nowpayments:Payment",
+    "Invoice": "nowpayments:Invoice",
+    "Payout": "nowpayments:Payout",
+    "Withdrawal": "nowpayments:Withdrawal",
+
+    "payment_id": {
+      "@id": "nowpayments:paymentId",
+      "@type": "xsd:integer"
+    },
+    "payment_status": {
+      "@id": "nowpayments:paymentStatus",
+      "@type": "xsd:string"
+    },
+    "pay_address": {
+      "@id": "nowpayments:payAddress",
+      "@type": "xsd:string"
+    },
+    "price_amount": {
+      "@id": "nowpayments:priceAmount",
+      "@type": "xsd:decimal"
+    },
+    "price_currency": {
+      "@id": "nowpayments:priceCurrency",
+      "@type": "xsd:string"
+    },
+    "pay_amount": {
+      "@id": "nowpayments:payAmount",
+      "@type": "xsd:decimal"
+    },
+    "actually_paid": {
+      "@id": "nowpayments:actuallyPaid",
+      "@type": "xsd:decimal"
+    },
+    "pay_currency": {
+      "@id": "nowpayments:payCurrency",
+      "@type": "xsd:string"
+    },
+    "order_id": {
+      "@id": "schema:orderNumber",
+      "@type": "xsd:string"
+    },
+    "order_description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "ipn_callback_url": {
+      "@id": "nowpayments:ipnCallbackUrl",
+      "@type": "@id"
+    },
+    "purchase_id": {
+      "@id": "nowpayments:purchaseId",
+      "@type": "xsd:integer"
+    },
+    "outcome_amount": {
+      "@id": "nowpayments:outcomeAmount",
+      "@type": "xsd:decimal"
+    },
+    "outcome_currency": {
+      "@id": "nowpayments:outcomeCurrency",
+      "@type": "xsd:string"
+    },
+    "invoice_url": {
+      "@id": "nowpayments:invoiceUrl",
+      "@type": "@id"
+    },
+    "success_url": {
+      "@id": "nowpayments:successUrl",
+      "@type": "@id"
+    },
+    "cancel_url": {
+      "@id": "nowpayments:cancelUrl",
+      "@type": "@id"
+    },
+    "withdrawals": {
+      "@id": "nowpayments:withdrawals",
+      "@container": "@set"
+    },
+    "address": {
+      "@id": "nowpayments:walletAddress",
+      "@type": "xsd:string"
+    },
+    "currency": {
+      "@id": "nowpayments:currency",
+      "@type": "xsd:string"
+    },
+    "amount": {
+      "@id": "schema:amount",
+      "@type": "xsd:decimal"
+    },
+    "created_at": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updated_at": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "fixed_rate": {
+      "@id": "nowpayments:fixedRate",
+      "@type": "xsd:boolean"
+    },
+    "payout_address": {
+      "@id": "nowpayments:payoutAddress",
+      "@type": "xsd:string"
+    },
+    "payout_currency": {
+      "@id": "nowpayments:payoutCurrency",
+      "@type": "xsd:string"
+    },
+    "currencies": {
+      "@id": "nowpayments:currencies",
+      "@container": "@set"
+    }
+  }
+}
