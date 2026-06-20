@@ -1,6 +1,6 @@
 name: NOWPayments
 description: NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. Founded in 2019, the platform processes over 30 million transactions monthly with 99.99% uptime and supports automatic coin conversion and fiat settlements.
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/apis.yml
 version: "0.19"
 created: "2026-06-13"
@@ -19,7 +19,7 @@ tags:
 apis:
   - name: NOWPayments Payment API
     description: Core REST API for accepting cryptocurrency payments in 300+ coins, creating payments and invoices, checking payment status, and managing transaction history. Supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://nowpayments.io/help/api
     baseURL: https://api.nowpayments.io/v1
     tags:
@@ -43,7 +43,7 @@ apis:
 
   - name: NOWPayments Mass Payouts API
     description: Bulk cryptocurrency payout API enabling merchants to initiate thousands of transactions to different addresses in a single API call. Designed for payroll, affiliate rewards, and mass distribution. No service fees — only blockchain network fees apply.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://nowpayments.io/api/mass-payments
     baseURL: https://api.nowpayments.io/v1
     tags:
@@ -63,7 +63,7 @@ apis:
 
   - name: NOWPayments Recurring Payments API
     description: Subscription-based recurring crypto billing API that automates payment flows for SaaS and membership platforms, allowing merchants to charge customers on scheduled intervals in cryptocurrency.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://nowpayments.io/api
     baseURL: https://api.nowpayments.io/v1
     tags:
@@ -81,7 +81,7 @@ apis:
 
   - name: NOWPayments Custody API
     description: Fund custody management API enabling limitless off-chain operations, sub-account creation, and controlled fund management for B2B flows and platform operators managing multiple merchant wallets.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://nowpayments.io/api
     baseURL: https://api.nowpayments.io/v1
     tags:
