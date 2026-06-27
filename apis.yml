@@ -100,7 +100,7 @@ apis:
 common:
   - type: Website
     url: https://nowpayments.io
-  - type: Developer Portal
+  - type: DeveloperPortal
     url: https://nowpayments.io/help/api
   - type: Blog
     url: https://nowpayments.io/blog
