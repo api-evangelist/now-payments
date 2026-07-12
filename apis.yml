@@ -98,6 +98,10 @@ apis:
         url: https://nowpayments.io/api
 
 common:
+  - type: DomainSecurity
+    url: security/now-payments-domain-security.yml
+  - type: Authentication
+    url: authentication/now-payments-authentication.yml
   - type: Website
     url: https://nowpayments.io
   - type: DeveloperPortal
