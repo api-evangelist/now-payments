@@ -1,0 +1,259 @@
+openapi: 3.0.3
+info:
+  title: NOWPayments Authentication Payouts API
+  description: 'NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
+
+    '
+  version: 1.0.0
+  contact:
+    name: NOWPayments Support
+    email: support@nowpayments.io
+    url: https://nowpayments.io/help
+  termsOfService: https://nowpayments.io/terms
+servers:
+- url: https://api.nowpayments.io/v1
+  description: Production server
+- url: https://api.sandbox.nowpayments.io/v1
+  description: Sandbox server
+security:
+- ApiKeyAuth: []
+tags:
+- name: Payouts
+  description: Mass payouts and balance management
+paths:
+  /payout:
+    post:
+      operationId: createPayout
+      summary: Create a mass payout
+      description: 'Initiates one or more cryptocurrency payouts to different wallet addresses in a single API call. Used for payroll, affiliate rewards, and bulk distribution. No service fees apply — only blockchain network fees.
+
+        '
+      tags:
+      - Payouts
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePayoutRequest'
+            example:
+              withdrawals:
+              - address: 3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX
+                currency: btc
+                amount: 0.001
+              - address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+                currency: eth
+                amount: 0.05
+      responses:
+        '201':
+          description: Payout created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /payout/{payout_id}:
+    get:
+      operationId: getPayoutStatus
+      summary: Get payout status
+      description: Returns the current status and details of a specific payout.
+      tags:
+      - Payouts
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      parameters:
+      - name: payout_id
+        in: path
+        required: true
+        description: Unique payout identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Payout details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutStatusResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /balance:
+    get:
+      operationId: getBalance
+      summary: Get account balance
+      description: Returns the current balance for all cryptocurrencies in the merchant account.
+      tags:
+      - Payouts
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Account balances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+              example:
+                btc:
+                  amount: 0.12345678
+                eth:
+                  amount: 1.5
+                ltc:
+                  amount: 3.2
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    PayoutStatusResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Payout batch identifier
+        status:
+          type: string
+          description: Overall payout batch status
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutItemStatus'
+        created_at:
+          type: string
+          format: date-time
+          description: Payout creation timestamp
+    WithdrawalItem:
+      type: object
+      required:
+      - address
+      - currency
+      - amount
+      properties:
+        address:
+          type: string
+          description: Wallet address to send funds to
+          example: 3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX
+        currency:
+          type: string
+          description: Cryptocurrency to send
+          example: btc
+        amount:
+          type: number
+          format: double
+          description: Amount to send (max 6 decimal places)
+          example: 0.001
+    PayoutItemStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Payout item identifier
+        address:
+          type: string
+          description: Recipient wallet address
+        currency:
+          type: string
+          description: Payout currency
+        amount:
+          type: number
+          format: double
+          description: Payout amount
+        status:
+          type: string
+          description: Status of this payout item
+          enum:
+          - WAITING
+          - CONFIRMING
+          - CONFIRMED
+          - SENDING
+          - FINISHED
+          - FAILED
+        hash:
+          type: string
+          description: Blockchain transaction hash
+    CreatePayoutRequest:
+      type: object
+      required:
+      - withdrawals
+      properties:
+        withdrawals:
+          type: array
+          description: List of payout recipients
+          items:
+            $ref: '#/components/schemas/WithdrawalItem'
+          minItems: 1
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
+    PayoutResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique payout batch identifier
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutItemStatus'
+    BalanceCurrency:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: Available balance amount
+    BalanceResponse:
+      type: object
+      description: Map of currency code to balance details
+      additionalProperties:
+        $ref: '#/components/schemas/BalanceCurrency'
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: NOWPayments API key obtained from your merchant dashboard
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from the /auth endpoint (required for mass payout operations)
+externalDocs:
+  description: NOWPayments API Documentation
+  url: https://nowpayments.io/help/api

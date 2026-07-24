@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: NOWPayments Authentication API
+  description: 'NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
+
+    '
+  version: 1.0.0
+  contact:
+    name: NOWPayments Support
+    email: support@nowpayments.io
+    url: https://nowpayments.io/help
+  termsOfService: https://nowpayments.io/terms
+servers:
+- url: https://api.nowpayments.io/v1
+  description: Production server
+- url: https://api.sandbox.nowpayments.io/v1
+  description: Sandbox server
+security:
+- ApiKeyAuth: []
+tags:
+- name: Authentication
+  description: JWT authentication for mass payouts
+paths:
+  /auth:
+    post:
+      operationId: authenticate
+      summary: Authenticate for mass payouts
+      description: 'Authenticates a merchant using email and password to obtain a JWT token. This token is required for mass payout operations.
+
+        '
+      tags:
+      - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+              example:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT token for authenticated mass payout operations
+    AuthRequest:
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: Merchant account email
+          example: merchant@example.com
+        password:
+          type: string
+          format: password
+          description: Merchant account password
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: NOWPayments API key obtained from your merchant dashboard
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from the /auth endpoint (required for mass payout operations)
+externalDocs:
+  description: NOWPayments API Documentation
+  url: https://nowpayments.io/help/api

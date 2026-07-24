@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: NOWPayments Authentication Status API
+  description: 'NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
+
+    '
+  version: 1.0.0
+  contact:
+    name: NOWPayments Support
+    email: support@nowpayments.io
+    url: https://nowpayments.io/help
+  termsOfService: https://nowpayments.io/terms
+servers:
+- url: https://api.nowpayments.io/v1
+  description: Production server
+- url: https://api.sandbox.nowpayments.io/v1
+  description: Sandbox server
+security:
+- ApiKeyAuth: []
+tags:
+- name: Status
+  description: API health and availability
+paths:
+  /status:
+    get:
+      operationId: getStatus
+      summary: Get API status
+      description: Returns the current status of the NOWPayments API.
+      tags:
+      - Status
+      security: []
+      responses:
+        '200':
+          description: API is operational
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+              example:
+                message: NOWPayments API is OK
+        '500':
+          description: API is experiencing issues
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    StatusResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Status message
+          example: NOWPayments API is OK
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: NOWPayments API key obtained from your merchant dashboard
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from the /auth endpoint (required for mass payout operations)
+externalDocs:
+  description: NOWPayments API Documentation
+  url: https://nowpayments.io/help/api

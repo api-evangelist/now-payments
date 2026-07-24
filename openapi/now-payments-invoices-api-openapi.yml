@@ -1,0 +1,195 @@
+openapi: 3.0.3
+info:
+  title: NOWPayments Authentication Invoices API
+  description: 'NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
+
+    '
+  version: 1.0.0
+  contact:
+    name: NOWPayments Support
+    email: support@nowpayments.io
+    url: https://nowpayments.io/help
+  termsOfService: https://nowpayments.io/terms
+servers:
+- url: https://api.nowpayments.io/v1
+  description: Production server
+- url: https://api.sandbox.nowpayments.io/v1
+  description: Sandbox server
+security:
+- ApiKeyAuth: []
+tags:
+- name: Invoices
+  description: Invoice creation for crypto payments
+paths:
+  /invoice:
+    post:
+      operationId: createInvoice
+      summary: Create an invoice
+      description: 'Creates a payment invoice with a hosted payment page URL. Customers are redirected to the invoice URL to complete their payment. Supports success and cancel redirect URLs.
+
+        '
+      tags:
+      - Invoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInvoiceRequest'
+            example:
+              price_amount: 100
+              price_currency: usd
+              pay_currency: btc
+              order_id: ORDER-12345
+              order_description: 'Payment for order #12345'
+              success_url: https://example.com/success
+              cancel_url: https://example.com/cancel
+      responses:
+        '201':
+          description: Invoice created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+              example:
+                id: 1234567
+                order_id: ORDER-12345
+                order_description: 'Payment for order #12345'
+                price_amount: 100
+                price_currency: usd
+                pay_currency: btc
+                ipn_callback_url: https://example.com/ipn
+                invoice_url: https://nowpayments.io/payment/?iid=1234567
+                success_url: https://example.com/success
+                cancel_url: https://example.com/cancel
+                created_at: '2021-01-15T12:00:00.000Z'
+                updated_at: '2021-01-15T12:00:00.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    InvoiceResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique invoice identifier
+        order_id:
+          type: string
+          description: Merchant order ID
+        order_description:
+          type: string
+          description: Order description
+        price_amount:
+          type: number
+          format: double
+          description: Invoice amount in fiat
+        price_currency:
+          type: string
+          description: Fiat currency of the invoice
+        pay_currency:
+          type: string
+          nullable: true
+          description: Preferred payment cryptocurrency (null if not specified)
+        ipn_callback_url:
+          type: string
+          description: IPN callback URL
+        invoice_url:
+          type: string
+          format: uri
+          description: Hosted payment page URL for the customer
+        success_url:
+          type: string
+          format: uri
+          description: Redirect URL after successful payment
+        cancel_url:
+          type: string
+          format: uri
+          description: Redirect URL if payment is cancelled
+        created_at:
+          type: string
+          format: date-time
+          description: Invoice creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Invoice last update timestamp
+    CreateInvoiceRequest:
+      type: object
+      required:
+      - price_amount
+      - price_currency
+      properties:
+        price_amount:
+          type: number
+          format: double
+          description: Price amount in fiat currency
+          example: 100
+        price_currency:
+          type: string
+          description: Fiat currency code (e.g., usd, eur)
+          example: usd
+        pay_currency:
+          type: string
+          description: Preferred cryptocurrency for payment (customer can change)
+          example: btc
+        ipn_callback_url:
+          type: string
+          format: uri
+          description: URL to receive IPN callback notifications
+        order_id:
+          type: string
+          description: Merchant order ID
+          example: ORDER-12345
+        order_description:
+          type: string
+          description: Human-readable order description
+          example: 'Payment for order #12345'
+        success_url:
+          type: string
+          format: uri
+          description: URL to redirect customer after successful payment
+        cancel_url:
+          type: string
+          format: uri
+          description: URL to redirect customer if they cancel payment
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: NOWPayments API key obtained from your merchant dashboard
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from the /auth endpoint (required for mass payout operations)
+externalDocs:
+  description: NOWPayments API Documentation
+  url: https://nowpayments.io/help/api
