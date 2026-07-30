@@ -1,6 +1,19 @@
 name: NOWPayments
 description: NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. Founded in 2019, the platform processes over 30 million transactions monthly with 99.99% uptime and supports automatic coin conversion and fiat settlements.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/now-payments.png
 url: https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/apis.yml
 version: "0.19"
 created: "2026-06-13"
@@ -17,86 +30,178 @@ tags:
   - Ethereum
 
 apis:
-  - name: NOWPayments Payment API
-    description: Core REST API for accepting cryptocurrency payments in 300+ coins, creating payments and invoices, checking payment status, and managing transaction history. Supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://nowpayments.io/help/api
-    baseURL: https://api.nowpayments.io/v1
-    tags:
-      - Crypto Payments
-      - Invoicing
-      - Payment Status
-      - Webhooks
-    properties:
-      - type: Documentation
-        url: https://nowpayments.io/help/api
-      - type: PostmanCollection
-        url: https://documenter.getpostman.com/view/7907941/S1a32n38
-      - type: Sandbox
-        url: https://api.sandbox.nowpayments.io/v1
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/now-payments/refs/heads/main/openapi/openapi.yml
-    contact:
-      - FN: NOWPayments Support
-        email: support@nowpayments.io
-        url: https://nowpayments.io/help
-
-  - name: NOWPayments Mass Payouts API
-    description: Bulk cryptocurrency payout API enabling merchants to initiate thousands of transactions to different addresses in a single API call. Designed for payroll, affiliate rewards, and mass distribution. No service fees — only blockchain network fees apply.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://nowpayments.io/api/mass-payments
-    baseURL: https://api.nowpayments.io/v1
-    tags:
-      - Mass Payouts
-      - Payroll
-      - Bulk Payments
-      - Cryptocurrency
-    properties:
-      - type: Documentation
-        url: https://nowpayments.io/api/mass-payments
-      - type: PostmanCollection
-        url: https://documenter.getpostman.com/view/7907941/S1a32n38
-    contact:
-      - FN: NOWPayments Partnerships
-        email: partners@nowpayments.io
-        url: https://nowpayments.io/api/mass-payments
-
-  - name: NOWPayments Recurring Payments API
-    description: Subscription-based recurring crypto billing API that automates payment flows for SaaS and membership platforms, allowing merchants to charge customers on scheduled intervals in cryptocurrency.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://nowpayments.io/api
-    baseURL: https://api.nowpayments.io/v1
-    tags:
-      - Subscriptions
-      - Recurring Payments
-      - Billing
-      - Cryptocurrency
-    properties:
-      - type: Documentation
-        url: https://nowpayments.io/api
-    contact:
-      - FN: NOWPayments Support
-        email: support@nowpayments.io
-        url: https://nowpayments.io/help
-
-  - name: NOWPayments Custody API
-    description: Fund custody management API enabling limitless off-chain operations, sub-account creation, and controlled fund management for B2B flows and platform operators managing multiple merchant wallets.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://nowpayments.io/api
-    baseURL: https://api.nowpayments.io/v1
-    tags:
-      - Custody
-      - Fund Management
-      - Sub-accounts
-      - Cryptocurrency
-    properties:
-      - type: Documentation
-        url: https://nowpayments.io/api
-    contact:
-      - FN: NOWPayments Partnerships
-        email: partners@nowpayments.io
-        url: https://nowpayments.io/api
-
+- name: NOWPayments Mass Payouts API
+  description: >-
+    Bulk cryptocurrency payout API enabling merchants to initiate thousands of transactions to different
+    addresses in a single API call. Designed for payroll, affiliate rewards, and mass distribution. No
+    service fees — only blockchain network fees apply.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://nowpayments.io/api/mass-payments
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Mass Payouts
+  - Payroll
+  - Bulk Payments
+  - Cryptocurrency
+  properties:
+  - type: Documentation
+    url: https://nowpayments.io/api/mass-payments
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  contact:
+  - FN: NOWPayments Partnerships
+    email: partners@nowpayments.io
+    url: https://nowpayments.io/api/mass-payments
+- name: NOWPayments Recurring Payments API
+  description: >-
+    Subscription-based recurring crypto billing API that automates payment flows for SaaS and membership
+    platforms, allowing merchants to charge customers on scheduled intervals in cryptocurrency.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://nowpayments.io/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Subscriptions
+  - Recurring Payments
+  - Billing
+  - Cryptocurrency
+  properties:
+  - type: Documentation
+    url: https://nowpayments.io/api
+  contact:
+  - FN: NOWPayments Support
+    email: support@nowpayments.io
+    url: https://nowpayments.io/help
+- name: NOWPayments Custody API
+  description: >-
+    Fund custody management API enabling limitless off-chain operations, sub-account creation, and controlled
+    fund management for B2B flows and platform operators managing multiple merchant wallets.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://nowpayments.io/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Custody
+  - Fund Management
+  - Sub-accounts
+  - Cryptocurrency
+  properties:
+  - type: Documentation
+    url: https://nowpayments.io/api
+  contact:
+  - FN: NOWPayments Partnerships
+    email: partners@nowpayments.io
+    url: https://nowpayments.io/api
+- aid: now-payments:now-payments-authentication-api
+  name: NOWPayments Authentication API
+  description: JWT authentication for mass payouts
+  humanURL: https://nowpayments.io/help/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/now-payments-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://nowpayments.io/help/api
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  - type: Sandbox
+    url: https://api.sandbox.nowpayments.io/v1
+- aid: now-payments:now-payments-currencies-api
+  name: NOWPayments Currencies API
+  description: Supported cryptocurrency listings
+  humanURL: https://nowpayments.io/help/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Currencies
+  properties:
+  - type: OpenAPI
+    url: openapi/now-payments-currencies-api-openapi.yml
+  - type: Documentation
+    url: https://nowpayments.io/help/api
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  - type: Sandbox
+    url: https://api.sandbox.nowpayments.io/v1
+- aid: now-payments:now-payments-estimates-api
+  name: NOWPayments Estimates API
+  description: Price estimation and minimum amounts
+  humanURL: https://nowpayments.io/help/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Estimates
+  properties:
+  - type: OpenAPI
+    url: openapi/now-payments-estimates-api-openapi.yml
+  - type: Documentation
+    url: https://nowpayments.io/help/api
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  - type: Sandbox
+    url: https://api.sandbox.nowpayments.io/v1
+- aid: now-payments:now-payments-invoices-api
+  name: NOWPayments Invoices API
+  description: Invoice creation for crypto payments
+  humanURL: https://nowpayments.io/help/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/now-payments-invoices-api-openapi.yml
+  - type: Documentation
+    url: https://nowpayments.io/help/api
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  - type: Sandbox
+    url: https://api.sandbox.nowpayments.io/v1
+- aid: now-payments:now-payments-payments-api
+  name: NOWPayments Payments API
+  description: Payment creation and management
+  humanURL: https://nowpayments.io/help/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/now-payments-payments-api-openapi.yml
+  - type: Documentation
+    url: https://nowpayments.io/help/api
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  - type: Sandbox
+    url: https://api.sandbox.nowpayments.io/v1
+- aid: now-payments:now-payments-payouts-api
+  name: NOWPayments Payouts API
+  description: Mass payouts and balance management
+  humanURL: https://nowpayments.io/help/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Payouts
+  properties:
+  - type: OpenAPI
+    url: openapi/now-payments-payouts-api-openapi.yml
+  - type: Documentation
+    url: https://nowpayments.io/help/api
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  - type: Sandbox
+    url: https://api.sandbox.nowpayments.io/v1
+- aid: now-payments:now-payments-status-api
+  name: NOWPayments Status API
+  description: API health and availability
+  humanURL: https://nowpayments.io/help/api
+  baseURL: https://api.nowpayments.io/v1
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/now-payments-status-api-openapi.yml
+  - type: Documentation
+    url: https://nowpayments.io/help/api
+  - type: PostmanCollection
+    url: https://documenter.getpostman.com/view/7907941/S1a32n38
+  - type: Sandbox
+    url: https://api.sandbox.nowpayments.io/v1
 common:
   - type: AgenticAccess
     url: agentic-access/now-payments-agentic-access.yml
