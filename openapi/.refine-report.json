@@ -1,0 +1,26 @@
+{
+  "provider": "now-payments",
+  "sources": [
+    "now-payments-authentication-api-openapi.yml",
+    "now-payments-currencies-api-openapi.yml",
+    "now-payments-estimates-api-openapi.yml",
+    "now-payments-invoices-api-openapi.yml",
+    "now-payments-payments-api-openapi.yml",
+    "now-payments-payouts-api-openapi.yml",
+    "now-payments-status-api-openapi.yml"
+  ],
+  "outputs": [
+    "now-payments-authentication-api-openapi.yml",
+    "now-payments-currencies-api-openapi.yml",
+    "now-payments-estimates-api-openapi.yml",
+    "now-payments-invoices-api-openapi.yml",
+    "now-payments-payments-api-openapi.yml",
+    "now-payments-payouts-api-openapi.yml",
+    "now-payments-status-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

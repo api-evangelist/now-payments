@@ -1,0 +1,933 @@
+openapi: 3.0.3
+info:
+  title: NOWPayments API
+  description: >
+    NOWPayments is a crypto payment gateway that enables businesses to accept
+    300+ cryptocurrencies, create payment invoices, process recurring
+    subscriptions, and manage merchant mass payouts. The API supports automatic
+    coin conversion, IPN webhooks, and fiat withdrawals.
+  version: "1.0.0"
+  contact:
+    name: NOWPayments Support
+    email: support@nowpayments.io
+    url: https://nowpayments.io/help
+  termsOfService: https://nowpayments.io/terms
+
+externalDocs:
+  description: NOWPayments API Documentation
+  url: https://nowpayments.io/help/api
+
+servers:
+  - url: https://api.nowpayments.io/v1
+    description: Production server
+  - url: https://api.sandbox.nowpayments.io/v1
+    description: Sandbox server
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Status
+    description: API health and availability
+  - name: Currencies
+    description: Supported cryptocurrency listings
+  - name: Estimates
+    description: Price estimation and minimum amounts
+  - name: Payments
+    description: Payment creation and management
+  - name: Invoices
+    description: Invoice creation for crypto payments
+  - name: Payouts
+    description: Mass payouts and balance management
+  - name: Authentication
+    description: JWT authentication for mass payouts
+
+paths:
+  /status:
+    get:
+      operationId: getStatus
+      summary: Get API status
+      description: Returns the current status of the NOWPayments API.
+      tags:
+        - Status
+      security: []
+      responses:
+        "200":
+          description: API is operational
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+              example:
+                message: "NOWPayments API is OK"
+        "500":
+          description: API is experiencing issues
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /currencies:
+    get:
+      operationId: getCurrencies
+      summary: Get available currencies
+      description: Returns a list of all cryptocurrencies available for payment.
+      tags:
+        - Currencies
+      responses:
+        "200":
+          description: List of available currencies
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrenciesResponse"
+              example:
+                currencies:
+                  - btc
+                  - eth
+                  - ltc
+                  - xrp
+                  - usdt
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /estimate:
+    get:
+      operationId: getEstimatePrice
+      summary: Get estimated price
+      description: >
+        Calculates the approximate price in cryptocurrency based on a given
+        fiat or crypto amount. Useful for showing customers how much crypto
+        they need to pay.
+      tags:
+        - Estimates
+      parameters:
+        - name: amount
+          in: query
+          required: true
+          description: Amount to convert
+          schema:
+            type: number
+            format: double
+            example: 100.5
+        - name: currency_from
+          in: query
+          required: true
+          description: Currency to convert from (e.g., usd, eur, btc)
+          schema:
+            type: string
+            example: usd
+        - name: currency_to
+          in: query
+          required: true
+          description: Currency to convert to (e.g., btc, eth)
+          schema:
+            type: string
+            example: btc
+      responses:
+        "200":
+          description: Estimated price
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstimateResponse"
+              example:
+                currency_from: usd
+                amount_from: 100.5
+                currency_to: btc
+                estimated_amount: 0.00267
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /min-amount:
+    get:
+      operationId: getMinimumPaymentAmount
+      summary: Get minimum payment amount
+      description: >
+        Returns the minimum payment amount for a specific currency pair.
+        Payments below this threshold cannot be processed.
+      tags:
+        - Estimates
+      parameters:
+        - name: currency_from
+          in: query
+          required: true
+          description: Source currency
+          schema:
+            type: string
+            example: usd
+        - name: currency_to
+          in: query
+          required: true
+          description: Target cryptocurrency
+          schema:
+            type: string
+            example: btc
+      responses:
+        "200":
+          description: Minimum payment amount
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MinAmountResponse"
+              example:
+                currency_from: usd
+                currency_to: btc
+                min_amount: 0.00005
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /payment:
+    post:
+      operationId: createPayment
+      summary: Create a payment
+      description: >
+        Creates a new cryptocurrency payment. The customer will send crypto
+        to the returned pay_address. Supports automatic coin conversion and
+        IPN webhook notifications.
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentRequest"
+            example:
+              price_amount: 100
+              price_currency: usd
+              pay_currency: btc
+              ipn_callback_url: https://example.com/ipn
+              order_id: "ORDER-12345"
+              order_description: "Apple Macbook Pro 2019 x 1"
+      responses:
+        "201":
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    get:
+      operationId: listPayments
+      summary: List payments
+      description: Returns a paginated list of all payments for the merchant account.
+      tags:
+        - Payments
+      parameters:
+        - name: limit
+          in: query
+          description: Number of records per page (default 10)
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 500
+        - name: page
+          in: query
+          description: Page number (0-indexed)
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: sortBy
+          in: query
+          description: Field to sort by
+          schema:
+            type: string
+            enum: [payment_id, payment_status, pay_address, price_amount, price_currency, pay_amount, pay_currency, order_id, created_at, updated_at]
+        - name: orderBy
+          in: query
+          description: Sort direction
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: dateFrom
+          in: query
+          description: Filter payments from this date (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: dateTo
+          in: query
+          description: Filter payments up to this date (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: List of payments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /payment/{payment_id}:
+    get:
+      operationId: getPaymentStatus
+      summary: Get payment status
+      description: Returns the current status and details of a specific payment.
+      tags:
+        - Payments
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          description: Unique payment identifier
+          schema:
+            type: string
+            example: "5045208125"
+      responses:
+        "200":
+          description: Payment details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentStatusResponse"
+              example:
+                payment_id: 5045208125
+                payment_status: waiting
+                pay_address: "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX"
+                price_amount: 100
+                price_currency: usd
+                pay_amount: 0.00267
+                actually_paid: 0
+                pay_currency: btc
+                order_id: "ORDER-12345"
+                order_description: "Apple Macbook Pro 2019 x 1"
+                purchase_id: 4944856743
+                created_at: "2021-01-15T12:00:00.000Z"
+                updated_at: "2021-01-15T12:00:00.000Z"
+                outcome_amount: 0.00267
+                outcome_currency: btc
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /invoice:
+    post:
+      operationId: createInvoice
+      summary: Create an invoice
+      description: >
+        Creates a payment invoice with a hosted payment page URL. Customers
+        are redirected to the invoice URL to complete their payment. Supports
+        success and cancel redirect URLs.
+      tags:
+        - Invoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvoiceRequest"
+            example:
+              price_amount: 100
+              price_currency: usd
+              pay_currency: btc
+              order_id: "ORDER-12345"
+              order_description: "Payment for order #12345"
+              success_url: https://example.com/success
+              cancel_url: https://example.com/cancel
+      responses:
+        "201":
+          description: Invoice created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceResponse"
+              example:
+                id: 1234567
+                order_id: "ORDER-12345"
+                order_description: "Payment for order #12345"
+                price_amount: 100
+                price_currency: usd
+                pay_currency: btc
+                ipn_callback_url: https://example.com/ipn
+                invoice_url: "https://nowpayments.io/payment/?iid=1234567"
+                success_url: https://example.com/success
+                cancel_url: https://example.com/cancel
+                created_at: "2021-01-15T12:00:00.000Z"
+                updated_at: "2021-01-15T12:00:00.000Z"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /auth:
+    post:
+      operationId: authenticate
+      summary: Authenticate for mass payouts
+      description: >
+        Authenticates a merchant using email and password to obtain a JWT
+        token. This token is required for mass payout operations.
+      tags:
+        - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+      responses:
+        "200":
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+              example:
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /payout:
+    post:
+      operationId: createPayout
+      summary: Create a mass payout
+      description: >
+        Initiates one or more cryptocurrency payouts to different wallet
+        addresses in a single API call. Used for payroll, affiliate rewards,
+        and bulk distribution. No service fees apply — only blockchain
+        network fees.
+      tags:
+        - Payouts
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePayoutRequest"
+            example:
+              withdrawals:
+                - address: "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX"
+                  currency: btc
+                  amount: 0.001
+                - address: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+                  currency: eth
+                  amount: 0.05
+      responses:
+        "201":
+          description: Payout created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayoutResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /payout/{payout_id}:
+    get:
+      operationId: getPayoutStatus
+      summary: Get payout status
+      description: Returns the current status and details of a specific payout.
+      tags:
+        - Payouts
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      parameters:
+        - name: payout_id
+          in: path
+          required: true
+          description: Unique payout identifier
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Payout details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayoutStatusResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /balance:
+    get:
+      operationId: getBalance
+      summary: Get account balance
+      description: Returns the current balance for all cryptocurrencies in the merchant account.
+      tags:
+        - Payouts
+      security:
+        - ApiKeyAuth: []
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Account balances
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BalanceResponse"
+              example:
+                btc:
+                  amount: 0.12345678
+                eth:
+                  amount: 1.5
+                ltc:
+                  amount: 3.2
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: NOWPayments API key obtained from your merchant dashboard
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from the /auth endpoint (required for mass payout operations)
+
+  schemas:
+    StatusResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Status message
+          example: "NOWPayments API is OK"
+
+    CurrenciesResponse:
+      type: object
+      properties:
+        currencies:
+          type: array
+          description: List of supported currency codes
+          items:
+            type: string
+          example: [btc, eth, ltc, xrp, usdt]
+
+    EstimateResponse:
+      type: object
+      properties:
+        currency_from:
+          type: string
+          description: Source currency code
+        amount_from:
+          type: number
+          format: double
+          description: Source amount
+        currency_to:
+          type: string
+          description: Target currency code
+        estimated_amount:
+          type: number
+          format: double
+          description: Estimated target amount
+
+    MinAmountResponse:
+      type: object
+      properties:
+        currency_from:
+          type: string
+          description: Source currency code
+        currency_to:
+          type: string
+          description: Target currency code
+        min_amount:
+          type: number
+          format: double
+          description: Minimum payment amount in the target currency
+
+    CreatePaymentRequest:
+      type: object
+      required:
+        - price_amount
+        - price_currency
+        - pay_currency
+      properties:
+        price_amount:
+          type: number
+          format: double
+          description: Fiat equivalent of the price to be paid in crypto
+          example: 100
+        price_currency:
+          type: string
+          description: Fiat currency in which price_amount is specified (e.g., usd, eur)
+          example: usd
+        pay_amount:
+          type: number
+          format: double
+          description: Amount users have to pay in crypto (overrides price_amount conversion)
+        pay_currency:
+          type: string
+          description: Cryptocurrency in which to receive payment
+          example: btc
+        ipn_callback_url:
+          type: string
+          format: uri
+          description: URL to receive IPN callback notifications
+        order_id:
+          type: string
+          description: Merchant order ID for reconciliation
+          example: "ORDER-12345"
+        order_description:
+          type: string
+          description: Human-readable order description
+          example: "Apple Macbook Pro 2019 x 1"
+        purchase_id:
+          type: string
+          description: ID of existing purchase to create additional payment for
+        payout_address:
+          type: string
+          description: Custom payout address (overrides account default)
+        payout_currency:
+          type: string
+          description: Currency for the payout address (required when payout_address is specified)
+        payout_extra_id:
+          type: string
+          description: Extra ID, memo, or tag for the payout address
+        fixed_rate:
+          type: boolean
+          description: Use fixed exchange rate for the payment
+
+    PaymentResponse:
+      type: object
+      properties:
+        payment_id:
+          type: integer
+          description: Unique payment identifier
+        payment_status:
+          type: string
+          description: Current payment status
+          enum: [waiting, confirming, confirmed, sending, partially_paid, finished, failed, refunded, expired]
+        pay_address:
+          type: string
+          description: Cryptocurrency address to which the customer should send payment
+        price_amount:
+          type: number
+          format: double
+          description: Requested payment amount in fiat currency
+        price_currency:
+          type: string
+          description: Fiat currency of the price amount
+        pay_amount:
+          type: number
+          format: double
+          description: Amount to pay in cryptocurrency
+        pay_currency:
+          type: string
+          description: Cryptocurrency for payment
+        order_id:
+          type: string
+          description: Merchant order ID
+        order_description:
+          type: string
+          description: Order description
+        ipn_callback_url:
+          type: string
+          description: IPN callback URL
+        created_at:
+          type: string
+          format: date-time
+          description: Payment creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Payment last update timestamp
+        purchase_id:
+          type: integer
+          description: Purchase identifier
+
+    PaymentStatusResponse:
+      allOf:
+        - $ref: "#/components/schemas/PaymentResponse"
+        - type: object
+          properties:
+            actually_paid:
+              type: number
+              format: double
+              description: Amount actually received so far
+            outcome_amount:
+              type: number
+              format: double
+              description: Amount to be credited to merchant after conversion
+            outcome_currency:
+              type: string
+              description: Currency of the outcome amount
+
+    PaymentListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentStatusResponse"
+        limit:
+          type: integer
+          description: Records per page
+        page:
+          type: integer
+          description: Current page number
+        pagesCount:
+          type: integer
+          description: Total number of pages
+        total:
+          type: integer
+          description: Total number of payments
+
+    CreateInvoiceRequest:
+      type: object
+      required:
+        - price_amount
+        - price_currency
+      properties:
+        price_amount:
+          type: number
+          format: double
+          description: Price amount in fiat currency
+          example: 100
+        price_currency:
+          type: string
+          description: Fiat currency code (e.g., usd, eur)
+          example: usd
+        pay_currency:
+          type: string
+          description: Preferred cryptocurrency for payment (customer can change)
+          example: btc
+        ipn_callback_url:
+          type: string
+          format: uri
+          description: URL to receive IPN callback notifications
+        order_id:
+          type: string
+          description: Merchant order ID
+          example: "ORDER-12345"
+        order_description:
+          type: string
+          description: Human-readable order description
+          example: "Payment for order #12345"
+        success_url:
+          type: string
+          format: uri
+          description: URL to redirect customer after successful payment
+        cancel_url:
+          type: string
+          format: uri
+          description: URL to redirect customer if they cancel payment
+
+    InvoiceResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique invoice identifier
+        order_id:
+          type: string
+          description: Merchant order ID
+        order_description:
+          type: string
+          description: Order description
+        price_amount:
+          type: number
+          format: double
+          description: Invoice amount in fiat
+        price_currency:
+          type: string
+          description: Fiat currency of the invoice
+        pay_currency:
+          type: string
+          nullable: true
+          description: Preferred payment cryptocurrency (null if not specified)
+        ipn_callback_url:
+          type: string
+          description: IPN callback URL
+        invoice_url:
+          type: string
+          format: uri
+          description: Hosted payment page URL for the customer
+        success_url:
+          type: string
+          format: uri
+          description: Redirect URL after successful payment
+        cancel_url:
+          type: string
+          format: uri
+          description: Redirect URL if payment is cancelled
+        created_at:
+          type: string
+          format: date-time
+          description: Invoice creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Invoice last update timestamp
+
+    AuthRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: Merchant account email
+          example: merchant@example.com
+        password:
+          type: string
+          format: password
+          description: Merchant account password
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT token for authenticated mass payout operations
+
+    WithdrawalItem:
+      type: object
+      required:
+        - address
+        - currency
+        - amount
+      properties:
+        address:
+          type: string
+          description: Wallet address to send funds to
+          example: "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX"
+        currency:
+          type: string
+          description: Cryptocurrency to send
+          example: btc
+        amount:
+          type: number
+          format: double
+          description: Amount to send (max 6 decimal places)
+          example: 0.001
+
+    CreatePayoutRequest:
+      type: object
+      required:
+        - withdrawals
+      properties:
+        withdrawals:
+          type: array
+          description: List of payout recipients
+          items:
+            $ref: "#/components/schemas/WithdrawalItem"
+          minItems: 1
+
+    PayoutItemStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Payout item identifier
+        address:
+          type: string
+          description: Recipient wallet address
+        currency:
+          type: string
+          description: Payout currency
+        amount:
+          type: number
+          format: double
+          description: Payout amount
+        status:
+          type: string
+          description: Status of this payout item
+          enum: [WAITING, CONFIRMING, CONFIRMED, SENDING, FINISHED, FAILED]
+        hash:
+          type: string
+          description: Blockchain transaction hash
+
+    PayoutResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique payout batch identifier
+        withdrawals:
+          type: array
+          items:
+            $ref: "#/components/schemas/PayoutItemStatus"
+
+    PayoutStatusResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Payout batch identifier
+        status:
+          type: string
+          description: Overall payout batch status
+        withdrawals:
+          type: array
+          items:
+            $ref: "#/components/schemas/PayoutItemStatus"
+        created_at:
+          type: string
+          format: date-time
+          description: Payout creation timestamp
+
+    BalanceCurrency:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: Available balance amount
+
+    BalanceResponse:
+      type: object
+      description: Map of currency code to balance details
+      additionalProperties:
+        $ref: "#/components/schemas/BalanceCurrency"
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
