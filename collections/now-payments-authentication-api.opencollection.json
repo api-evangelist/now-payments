@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NOWPayments Authentication API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authenticate for mass payouts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.nowpayments.io/v1/auth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticates a merchant using email and password to obtain a JWT token. This token is required for mass payout operations.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

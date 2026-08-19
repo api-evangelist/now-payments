@@ -1,0 +1,475 @@
+{
+  "item": [
+    {
+      "id": "8d2f393a-8bdb-40f9-880e-d83a7d28e84f",
+      "name": "Estimates",
+      "description": {
+        "content": "Price estimation and minimum amounts",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "55ec19c2-8643-4b10-8194-f681f31a79c0",
+          "name": "Get estimated price",
+          "request": {
+            "name": "Get estimated price",
+            "description": {
+              "content": "Calculates the approximate price in cryptocurrency based on a given fiat or crypto amount. Useful for showing customers how much crypto they need to pay.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "estimate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "amount",
+                  "value": "<double>",
+                  "description": "(Required) Amount to convert"
+                },
+                {
+                  "disabled": false,
+                  "key": "currency_from",
+                  "value": "<string>",
+                  "description": "(Required) Currency to convert from (e.g., usd, eur, btc)"
+                },
+                {
+                  "disabled": false,
+                  "key": "currency_to",
+                  "value": "<string>",
+                  "description": "(Required) Currency to convert to (e.g., btc, eth)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b32e4d56-139c-4632-9ef4-dd8e38b7d894",
+              "name": "Estimated price",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "estimate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "amount",
+                      "value": "100.5"
+                    },
+                    {
+                      "key": "currency_from",
+                      "value": "usd"
+                    },
+                    {
+                      "key": "currency_to",
+                      "value": "btc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currency_from\": \"usd\",\n  \"amount_from\": 100.5,\n  \"currency_to\": \"btc\",\n  \"estimated_amount\": 0.00267\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1d1287b-aeec-4936-9b03-dd86e4d3eb98",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "estimate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "amount",
+                      "value": "100.5"
+                    },
+                    {
+                      "key": "currency_from",
+                      "value": "usd"
+                    },
+                    {
+                      "key": "currency_to",
+                      "value": "btc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1affe1f3-205d-4c80-83ee-2ac55782b661",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "estimate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "amount",
+                      "value": "100.5"
+                    },
+                    {
+                      "key": "currency_from",
+                      "value": "usd"
+                    },
+                    {
+                      "key": "currency_to",
+                      "value": "btc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "86740bf7-a198-4ad1-8d01-a3c9dd443c57",
+          "name": "Get minimum payment amount",
+          "request": {
+            "name": "Get minimum payment amount",
+            "description": {
+              "content": "Returns the minimum payment amount for a specific currency pair. Payments below this threshold cannot be processed.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "min-amount"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "currency_from",
+                  "value": "<string>",
+                  "description": "(Required) Source currency"
+                },
+                {
+                  "disabled": false,
+                  "key": "currency_to",
+                  "value": "<string>",
+                  "description": "(Required) Target cryptocurrency"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d2ea6d2c-b3dc-4193-a2c4-fe404f1ce02a",
+              "name": "Minimum payment amount",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "min-amount"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "currency_from",
+                      "value": "usd"
+                    },
+                    {
+                      "key": "currency_to",
+                      "value": "btc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currency_from\": \"usd\",\n  \"currency_to\": \"btc\",\n  \"min_amount\": 0.00005\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "766662c5-f70f-446a-b9ff-574355be88f2",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "min-amount"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "currency_from",
+                      "value": "usd"
+                    },
+                    {
+                      "key": "currency_to",
+                      "value": "btc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "309680eb-6722-433e-88e4-179565e8c0b2",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "min-amount"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "currency_from",
+                      "value": "usd"
+                    },
+                    {
+                      "key": "currency_to",
+                      "value": "btc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.nowpayments.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8f490548-63d6-47c0-addd-a53552689143",
+    "name": "NOWPayments Authentication Estimates API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.\n\n\nContact Support:\n Name: NOWPayments Support\n Email: support@nowpayments.io",
+      "type": "text/plain"
+    }
+  }
+}

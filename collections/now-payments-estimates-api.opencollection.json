@@ -1,0 +1,82 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NOWPayments Authentication Estimates API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Estimates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get estimated price",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nowpayments.io/v1/estimate",
+            "params": [
+              {
+                "name": "amount",
+                "value": "",
+                "type": "query",
+                "description": "Amount to convert"
+              },
+              {
+                "name": "currency_from",
+                "value": "",
+                "type": "query",
+                "description": "Currency to convert from (e.g., usd, eur, btc)"
+              },
+              {
+                "name": "currency_to",
+                "value": "",
+                "type": "query",
+                "description": "Currency to convert to (e.g., btc, eth)"
+              }
+            ]
+          },
+          "docs": "Calculates the approximate price in cryptocurrency based on a given fiat or crypto amount. Useful for showing customers how much crypto they need to pay.\n"
+        },
+        {
+          "info": {
+            "name": "Get minimum payment amount",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.nowpayments.io/v1/min-amount",
+            "params": [
+              {
+                "name": "currency_from",
+                "value": "",
+                "type": "query",
+                "description": "Source currency"
+              },
+              {
+                "name": "currency_to",
+                "value": "",
+                "type": "query",
+                "description": "Target cryptocurrency"
+              }
+            ]
+          },
+          "docs": "Returns the minimum payment amount for a specific currency pair. Payments below this threshold cannot be processed.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
