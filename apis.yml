@@ -25,6 +25,15 @@ tags:
   - Cryptocurrency
   - Payment Gateway
   - Invoicing
+  - Subscription
+  - Mass Payouts
+  - Bitcoin
+  - Ethereum
+tags_raw:
+  - Crypto Payments
+  - Cryptocurrency
+  - Payment Gateway
+  - Invoicing
   - Subscriptions
   - Mass Payouts
   - Bitcoin
@@ -61,6 +70,11 @@ apis:
   humanURL: https://nowpayments.io/api
   baseURL: https://api.nowpayments.io/v1
   tags:
+  - Subscription
+  - Recurring Payments
+  - Billing
+  - Cryptocurrency
+  tags_raw:
   - Subscriptions
   - Recurring Payments
   - Billing
@@ -80,6 +94,11 @@ apis:
   humanURL: https://nowpayments.io/api
   baseURL: https://api.nowpayments.io/v1
   tags:
+  - Custody
+  - Fund Management
+  - Subaccounts
+  - Cryptocurrency
+  tags_raw:
   - Custody
   - Fund Management
   - Sub-accounts
@@ -113,6 +132,8 @@ apis:
   humanURL: https://nowpayments.io/help/api
   baseURL: https://api.nowpayments.io/v1
   tags:
+  - Currency
+  tags_raw:
   - Currencies
   properties:
   - type: OpenAPI
