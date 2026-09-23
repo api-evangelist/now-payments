@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: NOWPayments Authentication Payouts API
-  description: 'NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
-
-    '
+  title: NOWPayments Payouts API
+  description: NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
   version: 1.0.0
   contact:
     name: NOWPayments Support
@@ -25,9 +23,7 @@ paths:
     post:
       operationId: createPayout
       summary: Create a mass payout
-      description: 'Initiates one or more cryptocurrency payouts to different wallet addresses in a single API call. Used for payroll, affiliate rewards, and bulk distribution. No service fees apply — only blockchain network fees.
-
-        '
+      description: Initiates one or more cryptocurrency payouts to different wallet addresses in a single API call. Used for payroll, affiliate rewards, and bulk distribution. No service fees apply — only blockchain network fees.
       tags:
       - Payouts
       security:
@@ -114,23 +110,17 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    PayoutStatusResponse:
+    ErrorResponse:
       type: object
       properties:
-        id:
+        message:
           type: string
-          description: Payout batch identifier
-        status:
-          type: string
-          description: Overall payout batch status
-        withdrawals:
+          description: Error message
+        errors:
           type: array
+          description: Detailed error list
           items:
-            $ref: '#/components/schemas/PayoutItemStatus'
-        created_at:
-          type: string
-          format: date-time
-          description: Payout creation timestamp
+            type: string
     WithdrawalItem:
       type: object
       required:
@@ -151,6 +141,56 @@ components:
           format: double
           description: Amount to send (max 6 decimal places)
           example: 0.001
+    BalanceResponse:
+      type: object
+      description: Map of currency code to balance details
+      additionalProperties:
+        $ref: '#/components/schemas/BalanceCurrency'
+    PayoutResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique payout batch identifier
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutItemStatus'
+    CreatePayoutRequest:
+      type: object
+      required:
+      - withdrawals
+      properties:
+        withdrawals:
+          type: array
+          description: List of payout recipients
+          items:
+            $ref: '#/components/schemas/WithdrawalItem'
+          minItems: 1
+    BalanceCurrency:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: Available balance amount
+    PayoutStatusResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Payout batch identifier
+        status:
+          type: string
+          description: Overall payout batch status
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayoutItemStatus'
+        created_at:
+          type: string
+          format: date-time
+          description: Payout creation timestamp
     PayoutItemStatus:
       type: object
       properties:
@@ -180,53 +220,9 @@ components:
         hash:
           type: string
           description: Blockchain transaction hash
-    CreatePayoutRequest:
-      type: object
-      required:
-      - withdrawals
-      properties:
-        withdrawals:
-          type: array
-          description: List of payout recipients
-          items:
-            $ref: '#/components/schemas/WithdrawalItem'
-          minItems: 1
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          type: array
-          description: Detailed error list
-          items:
-            type: string
-    PayoutResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique payout batch identifier
-        withdrawals:
-          type: array
-          items:
-            $ref: '#/components/schemas/PayoutItemStatus'
-    BalanceCurrency:
-      type: object
-      properties:
-        amount:
-          type: number
-          format: double
-          description: Available balance amount
-    BalanceResponse:
-      type: object
-      description: Map of currency code to balance details
-      additionalProperties:
-        $ref: '#/components/schemas/BalanceCurrency'
   responses:
-    NotFound:
-      description: Resource not found
+    BadRequest:
+      description: Invalid request parameters
       content:
         application/json:
           schema:
@@ -237,8 +233,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Invalid request parameters
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:

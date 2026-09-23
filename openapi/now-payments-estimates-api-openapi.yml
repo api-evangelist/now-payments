@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: NOWPayments Authentication Estimates API
-  description: 'NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
-
-    '
+  title: NOWPayments Estimates API
+  description: NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
   version: 1.0.0
   contact:
     name: NOWPayments Support
@@ -25,9 +23,7 @@ paths:
     get:
       operationId: getEstimatePrice
       summary: Get estimated price
-      description: 'Calculates the approximate price in cryptocurrency based on a given fiat or crypto amount. Useful for showing customers how much crypto they need to pay.
-
-        '
+      description: Calculates the approximate price in cryptocurrency based on a given fiat or crypto amount. Useful for showing customers how much crypto they need to pay.
       tags:
       - Estimates
       parameters:
@@ -73,9 +69,7 @@ paths:
     get:
       operationId: getMinimumPaymentAmount
       summary: Get minimum payment amount
-      description: 'Returns the minimum payment amount for a specific currency pair. Payments below this threshold cannot be processed.
-
-        '
+      description: Returns the minimum payment amount for a specific currency pair. Payments below this threshold cannot be processed.
       tags:
       - Estimates
       parameters:
@@ -110,6 +104,30 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
+    MinAmountResponse:
+      type: object
+      properties:
+        currency_from:
+          type: string
+          description: Source currency code
+        currency_to:
+          type: string
+          description: Target currency code
+        min_amount:
+          type: number
+          format: double
+          description: Minimum payment amount in the target currency
     EstimateResponse:
       type: object
       properties:
@@ -127,39 +145,15 @@ components:
           type: number
           format: double
           description: Estimated target amount
-    MinAmountResponse:
-      type: object
-      properties:
-        currency_from:
-          type: string
-          description: Source currency code
-        currency_to:
-          type: string
-          description: Target currency code
-        min_amount:
-          type: number
-          format: double
-          description: Minimum payment amount in the target currency
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          type: array
-          description: Detailed error list
-          items:
-            type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid API key
+    BadRequest:
+      description: Invalid request parameters
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Invalid request parameters
+    Unauthorized:
+      description: Missing or invalid API key
       content:
         application/json:
           schema:

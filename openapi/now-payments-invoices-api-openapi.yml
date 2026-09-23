@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: NOWPayments Authentication Invoices API
-  description: 'NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
-
-    '
+  title: NOWPayments Invoices API
+  description: NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. The API supports automatic coin conversion, IPN webhooks, and fiat withdrawals.
   version: 1.0.0
   contact:
     name: NOWPayments Support
@@ -25,9 +23,7 @@ paths:
     post:
       operationId: createInvoice
       summary: Create an invoice
-      description: 'Creates a payment invoice with a hosted payment page URL. Customers are redirected to the invoice URL to complete their payment. Supports success and cancel redirect URLs.
-
-        '
+      description: Creates a payment invoice with a hosted payment page URL. Customers are redirected to the invoice URL to complete their payment. Supports success and cancel redirect URLs.
       tags:
       - Invoices
       requestBody:
@@ -70,52 +66,17 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    InvoiceResponse:
+    ErrorResponse:
       type: object
       properties:
-        id:
-          type: integer
-          description: Unique invoice identifier
-        order_id:
+        message:
           type: string
-          description: Merchant order ID
-        order_description:
-          type: string
-          description: Order description
-        price_amount:
-          type: number
-          format: double
-          description: Invoice amount in fiat
-        price_currency:
-          type: string
-          description: Fiat currency of the invoice
-        pay_currency:
-          type: string
-          nullable: true
-          description: Preferred payment cryptocurrency (null if not specified)
-        ipn_callback_url:
-          type: string
-          description: IPN callback URL
-        invoice_url:
-          type: string
-          format: uri
-          description: Hosted payment page URL for the customer
-        success_url:
-          type: string
-          format: uri
-          description: Redirect URL after successful payment
-        cancel_url:
-          type: string
-          format: uri
-          description: Redirect URL if payment is cancelled
-        created_at:
-          type: string
-          format: date-time
-          description: Invoice creation timestamp
-        updated_at:
-          type: string
-          format: date-time
-          description: Invoice last update timestamp
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
     CreateInvoiceRequest:
       type: object
       required:
@@ -155,26 +116,62 @@ components:
           type: string
           format: uri
           description: URL to redirect customer if they cancel payment
-    ErrorResponse:
+    InvoiceResponse:
       type: object
       properties:
-        message:
+        id:
+          type: integer
+          description: Unique invoice identifier
+        order_id:
           type: string
-          description: Error message
-        errors:
-          type: array
-          description: Detailed error list
-          items:
-            type: string
+          description: Merchant order ID
+        order_description:
+          type: string
+          description: Order description
+        price_amount:
+          type: number
+          format: double
+          description: Invoice amount in fiat
+        price_currency:
+          type: string
+          description: Fiat currency of the invoice
+        pay_currency:
+          type:
+          - string
+          - 'null'
+          description: Preferred payment cryptocurrency (null if not specified)
+        ipn_callback_url:
+          type: string
+          description: IPN callback URL
+        invoice_url:
+          type: string
+          format: uri
+          description: Hosted payment page URL for the customer
+        success_url:
+          type: string
+          format: uri
+          description: Redirect URL after successful payment
+        cancel_url:
+          type: string
+          format: uri
+          description: Redirect URL if payment is cancelled
+        created_at:
+          type: string
+          format: date-time
+          description: Invoice creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Invoice last update timestamp
   responses:
-    Unauthorized:
-      description: Missing or invalid API key
+    BadRequest:
+      description: Invalid request parameters
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Invalid request parameters
+    Unauthorized:
+      description: Missing or invalid API key
       content:
         application/json:
           schema:

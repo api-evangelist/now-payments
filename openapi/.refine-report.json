@@ -1,13 +1,7 @@
 {
   "provider": "now-payments",
   "sources": [
-    "now-payments-authentication-api-openapi.yml",
-    "now-payments-currencies-api-openapi.yml",
-    "now-payments-estimates-api-openapi.yml",
-    "now-payments-invoices-api-openapi.yml",
-    "now-payments-payments-api-openapi.yml",
-    "now-payments-payouts-api-openapi.yml",
-    "now-payments-status-api-openapi.yml"
+    "_original/openapi.yml"
   ],
   "outputs": [
     "now-payments-authentication-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "now-payments-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "now-payments-currencies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "now-payments-estimates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "now-payments-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "now-payments-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "now-payments-payouts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "now-payments-status-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
