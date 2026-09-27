@@ -163,17 +163,76 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    ErrorResponse:
+    PaymentListResponse:
       type: object
       properties:
-        message:
-          type: string
-          description: Error message
-        errors:
+        data:
           type: array
-          description: Detailed error list
           items:
-            type: string
+            $ref: '#/components/schemas/PaymentStatusResponse'
+        limit:
+          type: integer
+          description: Records per page
+        page:
+          type: integer
+          description: Current page number
+        pagesCount:
+          type: integer
+          description: Total number of pages
+        total:
+          type: integer
+          description: Total number of payments
+    CreatePaymentRequest:
+      type: object
+      required:
+      - price_amount
+      - price_currency
+      - pay_currency
+      properties:
+        price_amount:
+          type: number
+          format: double
+          description: Fiat equivalent of the price to be paid in crypto
+          example: 100
+        price_currency:
+          type: string
+          description: Fiat currency in which price_amount is specified (e.g., usd, eur)
+          example: usd
+        pay_amount:
+          type: number
+          format: double
+          description: Amount users have to pay in crypto (overrides price_amount conversion)
+        pay_currency:
+          type: string
+          description: Cryptocurrency in which to receive payment
+          example: btc
+        ipn_callback_url:
+          type: string
+          format: uri
+          description: URL to receive IPN callback notifications
+        order_id:
+          type: string
+          description: Merchant order ID for reconciliation
+          example: ORDER-12345
+        order_description:
+          type: string
+          description: Human-readable order description
+          example: Apple Macbook Pro 2019 x 1
+        purchase_id:
+          type: string
+          description: ID of existing purchase to create additional payment for
+        payout_address:
+          type: string
+          description: Custom payout address (overrides account default)
+        payout_currency:
+          type: string
+          description: Currency for the payout address (required when payout_address is specified)
+        payout_extra_id:
+          type: string
+          description: Extra ID, memo, or tag for the payout address
+        fixed_rate:
+          type: boolean
+          description: Use fixed exchange rate for the payment
     PaymentResponse:
       type: object
       properties:
@@ -230,57 +289,6 @@ components:
         purchase_id:
           type: integer
           description: Purchase identifier
-    CreatePaymentRequest:
-      type: object
-      required:
-      - price_amount
-      - price_currency
-      - pay_currency
-      properties:
-        price_amount:
-          type: number
-          format: double
-          description: Fiat equivalent of the price to be paid in crypto
-          example: 100
-        price_currency:
-          type: string
-          description: Fiat currency in which price_amount is specified (e.g., usd, eur)
-          example: usd
-        pay_amount:
-          type: number
-          format: double
-          description: Amount users have to pay in crypto (overrides price_amount conversion)
-        pay_currency:
-          type: string
-          description: Cryptocurrency in which to receive payment
-          example: btc
-        ipn_callback_url:
-          type: string
-          format: uri
-          description: URL to receive IPN callback notifications
-        order_id:
-          type: string
-          description: Merchant order ID for reconciliation
-          example: ORDER-12345
-        order_description:
-          type: string
-          description: Human-readable order description
-          example: Apple Macbook Pro 2019 x 1
-        purchase_id:
-          type: string
-          description: ID of existing purchase to create additional payment for
-        payout_address:
-          type: string
-          description: Custom payout address (overrides account default)
-        payout_currency:
-          type: string
-          description: Currency for the payout address (required when payout_address is specified)
-        payout_extra_id:
-          type: string
-          description: Extra ID, memo, or tag for the payout address
-        fixed_rate:
-          type: boolean
-          description: Use fixed exchange rate for the payment
     PaymentStatusResponse:
       allOf:
       - $ref: '#/components/schemas/PaymentResponse'
@@ -297,28 +305,20 @@ components:
           outcome_currency:
             type: string
             description: Currency of the outcome amount
-    PaymentListResponse:
+    ErrorResponse:
       type: object
       properties:
-        data:
+        message:
+          type: string
+          description: Error message
+        errors:
           type: array
+          description: Detailed error list
           items:
-            $ref: '#/components/schemas/PaymentStatusResponse'
-        limit:
-          type: integer
-          description: Records per page
-        page:
-          type: integer
-          description: Current page number
-        pagesCount:
-          type: integer
-          description: Total number of pages
-        total:
-          type: integer
-          description: Total number of payments
+            type: string
   responses:
-    BadRequest:
-      description: Invalid request parameters
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:
@@ -329,8 +329,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
+    BadRequest:
+      description: Invalid request parameters
       content:
         application/json:
           schema:

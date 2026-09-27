@@ -110,42 +110,23 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    ErrorResponse:
+    PayoutStatusResponse:
       type: object
       properties:
-        message:
+        id:
           type: string
-          description: Error message
-        errors:
+          description: Payout batch identifier
+        status:
+          type: string
+          description: Overall payout batch status
+        withdrawals:
           type: array
-          description: Detailed error list
           items:
-            type: string
-    WithdrawalItem:
-      type: object
-      required:
-      - address
-      - currency
-      - amount
-      properties:
-        address:
+            $ref: '#/components/schemas/PayoutItemStatus'
+        created_at:
           type: string
-          description: Wallet address to send funds to
-          example: 3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX
-        currency:
-          type: string
-          description: Cryptocurrency to send
-          example: btc
-        amount:
-          type: number
-          format: double
-          description: Amount to send (max 6 decimal places)
-          example: 0.001
-    BalanceResponse:
-      type: object
-      description: Map of currency code to balance details
-      additionalProperties:
-        $ref: '#/components/schemas/BalanceCurrency'
+          format: date-time
+          description: Payout creation timestamp
     PayoutResponse:
       type: object
       properties:
@@ -167,30 +148,26 @@ components:
           items:
             $ref: '#/components/schemas/WithdrawalItem'
           minItems: 1
-    BalanceCurrency:
+    WithdrawalItem:
       type: object
+      required:
+      - address
+      - currency
+      - amount
       properties:
+        address:
+          type: string
+          description: Wallet address to send funds to
+          example: 3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX
+        currency:
+          type: string
+          description: Cryptocurrency to send
+          example: btc
         amount:
           type: number
           format: double
-          description: Available balance amount
-    PayoutStatusResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Payout batch identifier
-        status:
-          type: string
-          description: Overall payout batch status
-        withdrawals:
-          type: array
-          items:
-            $ref: '#/components/schemas/PayoutItemStatus'
-        created_at:
-          type: string
-          format: date-time
-          description: Payout creation timestamp
+          description: Amount to send (max 6 decimal places)
+          example: 0.001
     PayoutItemStatus:
       type: object
       properties:
@@ -220,9 +197,32 @@ components:
         hash:
           type: string
           description: Blockchain transaction hash
+    BalanceResponse:
+      type: object
+      description: Map of currency code to balance details
+      additionalProperties:
+        $ref: '#/components/schemas/BalanceCurrency'
+    BalanceCurrency:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: Available balance amount
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
   responses:
-    BadRequest:
-      description: Invalid request parameters
+    NotFound:
+      description: Resource not found
       content:
         application/json:
           schema:
@@ -233,8 +233,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
+    BadRequest:
+      description: Invalid request parameters
       content:
         application/json:
           schema:
