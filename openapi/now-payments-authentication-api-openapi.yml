@@ -45,13 +45,14 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    AuthResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT token for authenticated mass payout operations
     ErrorResponse:
       type: object
       properties:
@@ -78,13 +79,12 @@ components:
           type: string
           format: password
           description: Merchant account password
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT token for authenticated mass payout operations
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
