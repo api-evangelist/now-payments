@@ -51,6 +51,17 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
     CurrenciesResponse:
       type: object
       properties:
@@ -65,17 +76,6 @@ components:
           - ltc
           - xrp
           - usdt
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          type: array
-          description: Detailed error list
-          items:
-            type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

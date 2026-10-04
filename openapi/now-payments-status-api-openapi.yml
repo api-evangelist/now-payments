@@ -44,13 +44,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    StatusResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Status message
-          example: NOWPayments API is OK
     ErrorResponse:
       type: object
       properties:
@@ -62,6 +55,13 @@ components:
           description: Detailed error list
           items:
             type: string
+    StatusResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Status message
+          example: NOWPayments API is OK
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

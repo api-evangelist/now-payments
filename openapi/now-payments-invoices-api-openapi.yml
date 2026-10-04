@@ -66,19 +66,58 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     BadRequest:
       description: Invalid request parameters
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    CreateInvoiceRequest:
+      type: object
+      required:
+      - price_amount
+      - price_currency
+      properties:
+        price_amount:
+          type: number
+          format: double
+          description: Price amount in fiat currency
+          example: 100
+        price_currency:
+          type: string
+          description: Fiat currency code (e.g., usd, eur)
+          example: usd
+        pay_currency:
+          type: string
+          description: Preferred cryptocurrency for payment (customer can change)
+          example: btc
+        ipn_callback_url:
+          type: string
+          format: uri
+          description: URL to receive IPN callback notifications
+        order_id:
+          type: string
+          description: Merchant order ID
+          example: ORDER-12345
+        order_description:
+          type: string
+          description: Human-readable order description
+          example: 'Payment for order #12345'
+        success_url:
+          type: string
+          format: uri
+          description: URL to redirect customer after successful payment
+        cancel_url:
+          type: string
+          format: uri
+          description: URL to redirect customer if they cancel payment
     InvoiceResponse:
       type: object
       properties:
@@ -126,45 +165,6 @@ components:
           type: string
           format: date-time
           description: Invoice last update timestamp
-    CreateInvoiceRequest:
-      type: object
-      required:
-      - price_amount
-      - price_currency
-      properties:
-        price_amount:
-          type: number
-          format: double
-          description: Price amount in fiat currency
-          example: 100
-        price_currency:
-          type: string
-          description: Fiat currency code (e.g., usd, eur)
-          example: usd
-        pay_currency:
-          type: string
-          description: Preferred cryptocurrency for payment (customer can change)
-          example: btc
-        ipn_callback_url:
-          type: string
-          format: uri
-          description: URL to receive IPN callback notifications
-        order_id:
-          type: string
-          description: Merchant order ID
-          example: ORDER-12345
-        order_description:
-          type: string
-          description: Human-readable order description
-          example: 'Payment for order #12345'
-        success_url:
-          type: string
-          format: uri
-          description: URL to redirect customer after successful payment
-        cancel_url:
-          type: string
-          format: uri
-          description: URL to redirect customer if they cancel payment
     ErrorResponse:
       type: object
       properties:
