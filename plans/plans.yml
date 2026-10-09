@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 plans:
   - name: Standard
     description: Core crypto payment gateway with 0.5% fee for monocurrency payments. Access to full REST API, sandbox environment, IPN notifications, and all integration tools.
@@ -32,3 +36,21 @@ plans:
       - Custom fee structure
       - Dedicated account management
     notes: Available when monthly asset flow reaches certain BTC thresholds. Contact partners@nowpayments.io.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Standard
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Volume Discount
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
