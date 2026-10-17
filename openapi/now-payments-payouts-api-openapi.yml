@@ -110,11 +110,17 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    BalanceResponse:
+    CreatePayoutRequest:
       type: object
-      description: Map of currency code to balance details
-      additionalProperties:
-        $ref: '#/components/schemas/BalanceCurrency'
+      required:
+      - withdrawals
+      properties:
+        withdrawals:
+          type: array
+          description: List of payout recipients
+          items:
+            $ref: '#/components/schemas/WithdrawalItem'
+          minItems: 1
     WithdrawalItem:
       type: object
       required:
@@ -135,13 +141,6 @@ components:
           format: double
           description: Amount to send (max 6 decimal places)
           example: 0.001
-    BalanceCurrency:
-      type: object
-      properties:
-        amount:
-          type: number
-          format: double
-          description: Available balance amount
     PayoutStatusResponse:
       type: object
       properties:
@@ -159,6 +158,17 @@ components:
           type: string
           format: date-time
           description: Payout creation timestamp
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
     PayoutResponse:
       type: object
       properties:
@@ -169,6 +179,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PayoutItemStatus'
+    BalanceResponse:
+      type: object
+      description: Map of currency code to balance details
+      additionalProperties:
+        $ref: '#/components/schemas/BalanceCurrency'
     PayoutItemStatus:
       type: object
       properties:
@@ -198,28 +213,13 @@ components:
         hash:
           type: string
           description: Blockchain transaction hash
-    CreatePayoutRequest:
-      type: object
-      required:
-      - withdrawals
-      properties:
-        withdrawals:
-          type: array
-          description: List of payout recipients
-          items:
-            $ref: '#/components/schemas/WithdrawalItem'
-          minItems: 1
-    ErrorResponse:
+    BalanceCurrency:
       type: object
       properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          type: array
-          description: Detailed error list
-          items:
-            type: string
+        amount:
+          type: number
+          format: double
+          description: Available balance amount
   responses:
     BadRequest:
       description: Invalid request parameters

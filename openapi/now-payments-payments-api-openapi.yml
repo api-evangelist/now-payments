@@ -162,25 +162,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
     PaymentResponse:
       type: object
@@ -238,6 +219,33 @@ components:
         purchase_id:
           type: integer
           description: Purchase identifier
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          type: array
+          description: Detailed error list
+          items:
+            type: string
+    PaymentStatusResponse:
+      allOf:
+      - $ref: '#/components/schemas/PaymentResponse'
+      - type: object
+        properties:
+          actually_paid:
+            type: number
+            format: double
+            description: Amount actually received so far
+          outcome_amount:
+            type: number
+            format: double
+            description: Amount to be credited to merchant after conversion
+          outcome_currency:
+            type: string
+            description: Currency of the outcome amount
     PaymentListResponse:
       type: object
       properties:
@@ -257,22 +265,6 @@ components:
         total:
           type: integer
           description: Total number of payments
-    PaymentStatusResponse:
-      allOf:
-      - $ref: '#/components/schemas/PaymentResponse'
-      - type: object
-        properties:
-          actually_paid:
-            type: number
-            format: double
-            description: Amount actually received so far
-          outcome_amount:
-            type: number
-            format: double
-            description: Amount to be credited to merchant after conversion
-          outcome_currency:
-            type: string
-            description: Currency of the outcome amount
     CreatePaymentRequest:
       type: object
       required:
@@ -324,17 +316,25 @@ components:
         fixed_rate:
           type: boolean
           description: Use fixed exchange rate for the payment
-    ErrorResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          type: array
-          description: Detailed error list
-          items:
-            type: string
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
