@@ -66,38 +66,153 @@
 
 NOWPayments is a crypto payment gateway that enables businesses to accept 300+ cryptocurrencies, create payment invoices, process recurring subscriptions, and manage merchant mass payouts. Founded in 2019, the platform processes over 30 million transactions monthly with 99.99% uptime and supports automatic coin conversion and fiat settlements.
 
-## APIs
+**Areas:** Crypto Payments · Cryptocurrency · Payment Gateway · Invoicing · Subscription · Mass Payouts · Bitcoin · Ethereum
 
-- **Payment API** — Core REST API for accepting cryptocurrency payments, creating invoices, checking payment status, and managing transaction history with IPN webhooks.
-- **Mass Payouts API** — Bulk payout API for initiating thousands of transactions in a single call for payroll and affiliate distributions (no service fee).
-- **Recurring Payments API** — Subscription-based billing automation for SaaS and membership platforms.
-- **Custody API** — Off-chain fund management with sub-account support for platform operators.
+## NOWPayments on APIs.io
 
-## Pricing
+Everything profiled for NOWPayments is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/now-payments/](https://apis.io/providers/now-payments/)** — or go straight to one of the APIs or properties below.
 
-- Monocurrency payments: 0.5% service fee
-- Conversion payments: 1.0% service fee
-- Mass payouts: 0% service fee (network fees only)
-- Volume discounts available for high-throughput merchants
+### APIs (10)
 
-## Developer Resources
+- [NOWPayments Mass Payouts API](https://apis.io/apis/now-payments/nowpayments-mass-payouts-api/) — Bulk cryptocurrency payout API enabling merchants to initiate thousands of transactions to different addresses in a single API call. Designed for payroll,…
+- [NOWPayments Recurring Payments API](https://apis.io/apis/now-payments/nowpayments-recurring-payments-api/) — Subscription-based recurring crypto billing API that automates payment flows for SaaS and membership platforms, allowing merchants to charge customers on…
+- [NOWPayments Custody API](https://apis.io/apis/now-payments/nowpayments-custody-api/) — Fund custody management API enabling limitless off-chain operations, sub-account creation, and controlled fund management for B2B flows and platform…
+- [NOWPayments Authentication API](https://apis.io/apis/now-payments/now-payments-authentication-api/) — JWT authentication for mass payouts
+- [NOWPayments Currencies API](https://apis.io/apis/now-payments/now-payments-currencies-api/) — Supported cryptocurrency listings
+- [NOWPayments Estimates API](https://apis.io/apis/now-payments/now-payments-estimates-api/) — Price estimation and minimum amounts
+- [NOWPayments Invoices API](https://apis.io/apis/now-payments/now-payments-invoices-api/) — Invoice creation for crypto payments
+- [NOWPayments Payments API](https://apis.io/apis/now-payments/now-payments-payments-api/) — Payment creation and management
+- [NOWPayments Payouts API](https://apis.io/apis/now-payments/now-payments-payouts-api/) — Mass payouts and balance management
+- [NOWPayments Status API](https://apis.io/apis/now-payments/now-payments-status-api/) — API health and availability
 
-- [API Documentation](https://nowpayments.io/help/api)
-- [Postman Collection](https://documenter.getpostman.com/view/7907941/S1a32n38)
-- [Sandbox Environment](https://sandbox.nowpayments.io)
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Now Payments Agentic Access](https://apis.io/agentic-access/now-payments/now-payments-agentic-access/)
+
+#### JSON Schema (3)
+
+The data models the API reads and writes.
+
+- [Invoice](https://apis.io/schemas/now-payments/invoice/)
+- [Payment](https://apis.io/schemas/now-payments/payment/)
+- [Payout](https://apis.io/schemas/now-payments/payout/)
+
+#### Examples (3)
+
+Example requests and responses.
+
+- [Create Invoice](https://apis.io/examples/now-payments/create-invoice/)
+- [Create Payment](https://apis.io/examples/now-payments/create-payment/)
+- [Mass Payout](https://apis.io/examples/now-payments/mass-payout/)
+
+#### Collections (7)
+
+Postman and Open Collection request collections.
+
+- [NOWPayments Authentication API](https://apis.io/collections/now-payments/open-now-payments-authentication-api/)
+- [NOWPayments Authentication Currencies API](https://apis.io/collections/now-payments/open-now-payments-currencies-api/)
+- [NOWPayments Authentication Estimates API](https://apis.io/collections/now-payments/open-now-payments-estimates-api/)
+- [NOWPayments Authentication Invoices API](https://apis.io/collections/now-payments/open-now-payments-invoices-api/)
+- [NOWPayments Authentication Payments API](https://apis.io/collections/now-payments/open-now-payments-payments-api/)
+- [NOWPayments Authentication Payouts API](https://apis.io/collections/now-payments/open-now-payments-payouts-api/)
+- [NOWPayments Authentication Status API](https://apis.io/collections/now-payments/open-now-payments-status-api/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [NOWPayments — jsonschema rules](https://apis.io/rules/now-payments/now-payments-jsonschema-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Now Payments Authentication](https://apis.io/security/now-payments/now-payments-authentication/)
+- [Now Payments Domain Security](https://apis.io/security/now-payments/now-payments-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Plans](https://apis.io/plans/now-payments/plans/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Rate Limits](https://apis.io/rate-limits/now-payments/rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Finops](https://apis.io/finops/now-payments/finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://nowpayments.io)
 - [Pricing](https://nowpayments.io/pricing)
 - [Blog](https://nowpayments.io/blog)
+- [Terms of service](https://nowpayments.io/terms)
+- [Privacy policy](https://nowpayments.io/privacy)
 
-## Authentication
+## API Evangelist rating
 
-Requires an `x-api-key` header with your API key from your NOWPayments merchant account. JWT bearer tokens are required for payout and payment list endpoints (valid 5 minutes, obtained from `POST /v1/auth`).
+**Kin Score 30.4** — thin · rubric 0.24.0 · scored 2026-10-17
 
-## Base URL
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 52.6 |
+| Contract governance | 9.8 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 41.7 |
+| Access clarity | 15.8 |
 
-- Production: `https://api.nowpayments.io/v1`
-- Sandbox: `https://api.sandbox.nowpayments.io/v1`
+**Agent readiness 24.8** — agent-aware
 
-## Contact
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
 
-- Support: support@nowpayments.io
-- Partnerships: partners@nowpayments.io
+**Regulatory alignment 10.7** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/now-payments/](https://apis.io/providers/now-payments/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for NOWPayments: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/now-payments/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
